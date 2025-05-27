@@ -1,4 +1,5 @@
 import axios from 'axios';
+import apiRoutes from './apiRoutes';
 
 const api = axios.create({
   baseURL: 'http://localhost:8082/api',
@@ -7,7 +8,7 @@ const api = axios.create({
 // Cadastro de usuário
 export const registerUser = async (data) => {
   try {
-    const response = await api.post('/usuarios/cadastro', data, {
+    const response = await api.post(apiRoutes.usuarios.cadastro(), data, {
       headers: { 'Content-Type': 'application/json' }
     });
     return response.data;
@@ -20,7 +21,7 @@ export const registerUser = async (data) => {
 // Login de usuário
 export const loginUser = async (data) => {
   try {
-    const response = await api.post('/usuarios/login', data);
+    const response = await api.post(apiRoutes.usuarios.login(), data);
     return response.data; // Deve retornar o token JWT
   } catch (error) {
     console.error('Erro ao fazer login:', error);
@@ -31,7 +32,7 @@ export const loginUser = async (data) => {
 // Buscar usuário por ID (rota protegida)
 export const getUserById = async (id, token) => {
   try {
-    const response = await api.get(`/usuarios/${id}`, {
+    const response = await api.get(apiRoutes.usuarios.buscar(id), {
       headers: { Authorization: `Bearer ${token}` }
     });
     return response.data;
@@ -44,7 +45,7 @@ export const getUserById = async (id, token) => {
 // Atualizar usuário (rota protegida)
 export const updateUser = async (id, data, token) => {
   try {
-    const response = await api.put(`/usuarios/${id}`, data, {
+    const response = await api.put(apiRoutes.usuarios.atualizar(id), data, {
       headers: { Authorization: `Bearer ${token}` }
     });
     return response.data;
@@ -57,7 +58,7 @@ export const updateUser = async (id, data, token) => {
 // Deletar usuário (rota protegida)
 export const deleteUser = async (id, token) => {
   try {
-    const response = await api.delete(`/usuarios/${id}`, {
+    const response = await api.delete(apiRoutes.usuarios.deletar(id), {
       headers: { Authorization: `Bearer ${token}` }
     });
     return response.data;

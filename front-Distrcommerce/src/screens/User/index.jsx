@@ -1,27 +1,39 @@
 import { useEffect, useState } from 'react';
 import { getUserById, updateUser, deleteUser } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
-
-const User = () => {
+import { useRef } from 'react';
+  const User = () => {
   const [user, setUser] = useState(null);
   const [edit, setEdit] = useState(false);
   const [form, setForm] = useState({ nome: '', email: '' });
   const navigate = useNavigate();
 
+  const sessionAlertedRef = useRef(false);
+
   useEffect(() => {
     const fetchUser = async () => {
       const token = localStorage.getItem('token');
-      // Supondo que o ID do usuário esteja salvo no localStorage ou JWT
-      const userId = localStorage.getItem('userId');
+      const userIdStr = localStorage.getItem('userId');
+      const userId = userIdStr ? Number(userIdStr) : null;
+      console.log('DEBUG: token', token); // depuração
+      console.log('DEBUG: userId', userId); // depuração
       if (token && userId) {
         try {
-          const data = await getUserById(userId, token);
+          let data;
+          data = await getUserById(userId, token);
+          console.log('DEBUG: getUserById/getUserByEmail data', data); // depuração
           setUser(data);
           setForm({ nome: data.nome, email: data.email });
-        } catch {
-          alert('Sessão expirada. Faça login novamente.');
-          navigate('/login');
+        } catch (err) {
+          console.error('DEBUG: erro ao buscar usuário', err); // depuração
+          if (!sessionAlertedRef.current) {
+            sessionAlertedRef.current = true;
+            alert('Sessão expirada. Faça login novamente.');
+            navigate('/login');
+          }
         }
+      } else {
+        console.warn('DEBUG: token ou userId ausente'); // depuração
       }
     };
     fetchUser();
@@ -58,7 +70,10 @@ const User = () => {
     }
   };
 
-  if (!user) return <div>Carregando...</div>;
+  if (!user) {
+    console.log('DEBUG: user está nulo, renderizando Carregando...'); // depuração
+    return <div>Carregando...</div>;
+  }
 
   return (
     <div>

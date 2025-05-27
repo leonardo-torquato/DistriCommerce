@@ -14,8 +14,19 @@ const Login = () => {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      const token = await loginUser(form);
-      localStorage.setItem('token', token); // Armazena o token no localStorage
+      const result = await loginUser(form);
+      let token, userId;
+      if (typeof result === 'object' && result.token && result.userId) {
+        token = result.token;
+        userId = result.userId; // userId deve ser retornado pelo backend como long
+      } else {
+        token = result;
+        userId = null; // Se não houver userId, defina como null ou trate conforme necessário
+      }
+      localStorage.setItem('token', token);
+      if (userId !== null) {
+        localStorage.setItem('userId', userId);
+      }
       alert('Login realizado com sucesso!');
       navigate('/user');
     } catch (error) {

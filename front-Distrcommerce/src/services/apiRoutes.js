@@ -6,6 +6,7 @@ const apiRoutes = {
     cadastro: () => `${baseUrlUsuariosProdutos}/api/usuarios/cadastro`,
     login: () => `${baseUrlUsuariosProdutos}/api/usuarios/login`,
     buscar: (id) => `${baseUrlUsuariosProdutos}/api/usuarios/${id}`,
+    buscarPorEmail: (email) => `${baseUrlUsuariosProdutos}/api/usuarios/email/${email}`,
     atualizar: (id) => `${baseUrlUsuariosProdutos}/api/usuarios/${id}`,
     deletar: (id) => `${baseUrlUsuariosProdutos}/api/usuarios/${id}`,
   },
