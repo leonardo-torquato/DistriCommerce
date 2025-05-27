@@ -1,25 +1,68 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:3000/api', // Update this with your backend URL
+  baseURL: 'http://localhost:8082/api',
 });
 
-export const getProducts = async () => {
+// Cadastro de usuário
+export const registerUser = async (data) => {
   try {
-    const response = await api.get('/products');
+    const response = await api.post('/usuarios/cadastro', data, {
+      headers: { 'Content-Type': 'application/json' }
+    });
     return response.data;
   } catch (error) {
-    console.error('Error fetching products:', error);
+    console.error('Erro ao cadastrar usuário:', error);
     throw error;
   }
 };
 
-export const getProductById = async (id) => {
+// Login de usuário
+export const loginUser = async (data) => {
   try {
-    const response = await api.get(`/products/${id}`);
+    const response = await api.post('/usuarios/login', data);
+    return response.data; // Deve retornar o token JWT
+  } catch (error) {
+    console.error('Erro ao fazer login:', error);
+    throw error;
+  }
+};
+
+// Buscar usuário por ID (rota protegida)
+export const getUserById = async (id, token) => {
+  try {
+    const response = await api.get(`/usuarios/${id}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
     return response.data;
   } catch (error) {
-    console.error('Error fetching product:', error);
+    console.error('Erro ao buscar usuário:', error);
+    throw error;
+  }
+};
+
+// Atualizar usuário (rota protegida)
+export const updateUser = async (id, data, token) => {
+  try {
+    const response = await api.put(`/usuarios/${id}`, data, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao atualizar usuário:', error);
+    throw error;
+  }
+};
+
+// Deletar usuário (rota protegida)
+export const deleteUser = async (id, token) => {
+  try {
+    const response = await api.delete(`/usuarios/${id}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao deletar usuário:', error);
     throw error;
   }
 };

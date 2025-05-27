@@ -1,42 +1,54 @@
-import React, { useState } from 'react';
 import { LoginContainer, Form, Input, Button, LinkText, Logo } from './styles';
+import React, { useState } from 'react';
+
 import { useNavigate } from 'react-router-dom';
+import { loginUser } from '../../services/api'; // Importa a função de login
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
+
+  const [form, setForm] = useState({email: '', senha: ''});
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleChange = e => setForm({...form, [e.target.name]: e.target.value});
+
+  const handleSubmit = async e => {
     e.preventDefault();
-    // Lógica de autenticação aqui
-    navigate('/user');
+    try {
+      const token = await loginUser(form);
+      localStorage.setItem('token', token); // Armazena o token no localStorage
+      alert('Login realizado com sucesso!');
+      navigate('/user');
+    } catch (error) {
+      console.error('Erro ao fazer login:', error);
+      alert('Erro ao fazer login. Tente novamente.');
+    }
   };
 
   return (
     <LoginContainer>
-      <Logo>Distrcommerce</Logo>
+      <Logo src="/logo.png" alt="Distrcommerce Logo" />
       <h2>Entrar</h2>
-      <Form onSubmit={handleLogin}>
+      <Form onSubmit={handleSubmit}>
         <Input
           type="email"
+          name="email"
           placeholder="E-mail"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
+          value={form.email}
+          onChange={handleChange}
           required
         />
+        
         <Input
           type="password"
+          name="senha"
           placeholder="Senha"
-          value={senha}
-          onChange={e => setSenha(e.target.value)}
+          value={form.senha}
+          onChange={handleChange}
           required
         />
-        <Button type="submit">Entrar</Button>
+        <Button type="submit">Cadastrar</Button>
       </Form>
-      <LinkText onClick={() => navigate('/register')}>
-        Não tem uma conta? Cadastre-se
-      </LinkText>
+      <LinkText to="/login">Já tem uma conta? Faça login</LinkText>
     </LoginContainer>
   );
 };

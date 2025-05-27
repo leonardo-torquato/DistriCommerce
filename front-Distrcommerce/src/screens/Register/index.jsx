@@ -1,52 +1,65 @@
 import React, { useState } from 'react';
 import { RegisterContainer, Form, Input, Button, LinkText, Logo } from './styles';
+import { registerUser } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
-import BackButton from '../../components/BackButton';
 
 const Register = () => {
-  const [nome, setNome] = useState('');
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const navigate = useNavigate();
+  const [form, setForm] = useState({
+    nome: '',
+    email: '',
+    senha: ''
+  });
 
-  const handleRegister = (e) => {
+  const navigate = useNavigate();
+  
+  const handleChange = e => setForm({
+    ...form,
+    [e.target.name]: e.target.value
+  });
+
+  const handleSubmit = async e => {
     e.preventDefault();
-    // Lógica de cadastro aqui
-    navigate('/user');
+    try {
+      await registerUser(form)
+      alert('Usuário cadastrado com sucesso!');
+      navigate('/login');    
+    } catch (error) {
+      console.error('Erro ao cadastrar usuário:', error);
+      alert('Erro ao cadastrar usuário. Tente novamente.');
+    }
   };
 
   return (
     <RegisterContainer>
-      <BackButton onClick={() => navigate(-1)} style={{ marginBottom: 20 }}>Voltar</BackButton>
-      <Logo>Distrcommerce</Logo>
-      <h2>Cadastrar</h2>
-      <Form onSubmit={handleRegister}>
-        <Input
-          type="text"
-          placeholder="Nome"
-          value={nome}
-          onChange={e => setNome(e.target.value)}
-          required
-        />
+      <Logo src="/logo.png" alt="Distrcommerce Logo" />
+      <h2>Entrar</h2>
+      <Form onSubmit={handleSubmit}>
         <Input
           type="email"
+          name="email"
           placeholder="E-mail"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
+          value={form.email}
+          onChange={handleChange}
           required
         />
         <Input
+          type="text"
+          name="nome"
+          placeholder="Nome Completo"
+          value={form.nome}
+          onChange={handleChange}
+          required />
+        <Input
           type="password"
+          name="senha"
           placeholder="Senha"
-          value={senha}
-          onChange={e => setSenha(e.target.value)}
+          value={form.senha}
+          onChange={handleChange}
           required
         />
         <Button type="submit">Cadastrar</Button>
       </Form>
-      <LinkText onClick={() => navigate('/login')}>
-        Já tem uma conta? Entrar
-      </LinkText>
+      <LinkText to="/login">Já tem uma conta? Faça login</LinkText>
     </RegisterContainer>
   );
 };
