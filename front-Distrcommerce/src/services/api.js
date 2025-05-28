@@ -1,9 +1,7 @@
 import axios from 'axios';
 import apiRoutes from './apiRoutes';
 
-const api = axios.create({
-  baseURL: 'http://localhost:8082/api',
-});
+const api = axios.create();
 
 // Cadastro de usuário
 export const registerUser = async (data) => {
@@ -64,6 +62,19 @@ export const deleteUser = async (id, token) => {
     return response.data;
   } catch (error) {
     console.error('Erro ao deletar usuário:', error);
+    throw error;
+  }
+};
+
+// Buscar usuário por email (rota protegida)
+export const getUserByEmail = async (email, token) => {
+  try {
+    const response = await api.get(apiRoutes.usuarios.buscarPorEmail(email), {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao buscar usuário por email:', error);
     throw error;
   }
 };

@@ -1,8 +1,9 @@
 import { LoginContainer, Form, Input, Button, LinkText, Logo } from './styles';
-import React, { useState } from 'react';
-
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { loginUser } from '../../services/api'; // Importa a função de login
+import { loginUser, getUserByEmail } from '../../services/api'; // Importa a função de login e getUserByEmail
+import { parseJwt } from '../../services/jwt';
 
 const Login = () => {
 
@@ -16,16 +17,21 @@ const Login = () => {
     try {
       const result = await loginUser(form);
       let token, userId;
-      if (typeof result === 'object' && result.token && result.userId) {
+      if (typeof result === 'object' && result.token) {
         token = result.token;
-        userId = result.userId; // userId deve ser retornado pelo backend como long
       } else {
         token = result;
-        userId = null; // Se não houver userId, defina como null ou trate conforme necessário
       }
+      // Decodifica o token para extrair o email
+      const payload = parseJwt(token);
+      const email = payload && (payload.userId || payload.id || payload.sub || payload.user_id);
       localStorage.setItem('token', token);
-      if (userId !== null) {
-        localStorage.setItem('userId', userId);
+      // Busca o usuário pelo email para obter o id real
+      if (email) {
+        const userData = await getUserByEmail(email, token); // agora busca corretamente pelo endpoint de email
+        if (userData && userData.id) {
+          localStorage.setItem('userId', userData.id);
+        }
       }
       alert('Login realizado com sucesso!');
       navigate('/user');
@@ -57,9 +63,11 @@ const Login = () => {
           onChange={handleChange}
           required
         />
-        <Button type="submit">Cadastrar</Button>
+        <Button type="submit">Entrar</Button>
       </Form>
-      <LinkText to="/login">Já tem uma conta? Faça login</LinkText>
+      <Link to="/register" style={{ textDecoration: 'none', color: '#007bff', marginTop: '16px' }}>
+        Não tem uma conta? Cadastre-se
+      </Link>
     </LoginContainer>
   );
 };

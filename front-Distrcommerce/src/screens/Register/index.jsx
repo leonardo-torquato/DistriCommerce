@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { RegisterContainer, Form, Input, Button, LinkText, Logo } from './styles';
+import { RegisterContainer, Form, Input, Button, Logo } from './styles';
+import { Link } from 'react-router-dom';
 import { registerUser } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 
@@ -32,7 +33,7 @@ const Register = () => {
   return (
     <RegisterContainer>
       <Logo src="/logo.png" alt="Distrcommerce Logo" />
-      <h2>Entrar</h2>
+      <h2>Cadastro</h2>
       <Form onSubmit={handleSubmit}>
         <Input
           type="email"
@@ -58,8 +59,10 @@ const Register = () => {
           required
         />
         <Button type="submit">Cadastrar</Button>
+      <Link to="/login" style={{ textDecoration: 'none', color: '#007bff', marginTop: '16px' }}>
+        Já tem uma conta? Faça login
+      </Link>
       </Form>
-      <LinkText to="/login">Já tem uma conta? Faça login</LinkText>
     </RegisterContainer>
   );
 };

@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { getUserById, updateUser, deleteUser } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
-import { useRef } from 'react';
-  const User = () => {
+import { UserContainer, Card, Title, InfoRow, Label, Value, LogoutButton } from './styles';
+
+const User = () => {
   const [user, setUser] = useState(null);
   const [edit, setEdit] = useState(false);
   const [form, setForm] = useState({ nome: '', email: '' });
@@ -14,7 +15,8 @@ import { useRef } from 'react';
     const fetchUser = async () => {
       const token = localStorage.getItem('token');
       const userIdStr = localStorage.getItem('userId');
-      const userId = userIdStr ? Number(userIdStr) : null;
+      // userId pode ser string (email) se vier do sub do JWT
+      const userId = userIdStr && !isNaN(Number(userIdStr)) ? Number(userIdStr) : userIdStr;
       console.log('DEBUG: token', token); // depuração
       console.log('DEBUG: userId', userId); // depuração
       if (token && userId) {
@@ -76,23 +78,42 @@ import { useRef } from 'react';
   }
 
   return (
-    <div>
-      {edit ? (
-        <form onSubmit={handleUpdate}>
-          <input name="nome" value={form.nome} onChange={handleChange} />
-          <input name="email" value={form.email} onChange={handleChange} />
-          <button type="submit">Salvar</button>
-          <button type="button" onClick={() => setEdit(false)}>Cancelar</button>
-        </form>
-      ) : (
-        <>
-          <p>Nome: {user.nome}</p>
-          <p>Email: {user.email}</p>
-          <button onClick={() => setEdit(true)}>Editar</button>
-          <button onClick={handleDelete}>Excluir Conta</button>
-        </>
-      )}
-    </div>
+    <UserContainer>
+      <Card>
+        <Title>Minha Conta</Title>
+        {edit ? (
+          <form onSubmit={handleUpdate} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <label>
+              Nome:
+              <input name="nome" value={form.nome} onChange={handleChange} style={{ padding: '0.75rem', border: '1px solid #ccc', borderRadius: 4 }} />
+            </label>
+            <label>
+              Email:
+              <input name="email" value={form.email} onChange={handleChange} style={{ padding: '0.75rem', border: '1px solid #ccc', borderRadius: 4 }} />
+            </label>
+            <div style={{ display: 'flex', gap: '1rem' }}>
+              <button type="submit" style={{ padding: '0.75rem', background: '#007bff', color: '#fff', border: 'none', borderRadius: 4, fontWeight: 'bold' }}>Salvar</button>
+              <button type="button" onClick={() => setEdit(false)} style={{ padding: '0.75rem', background: '#d32f2f', color: '#fff', border: 'none', borderRadius: 4, fontWeight: 'bold' }}>Cancelar</button>
+            </div>
+          </form>
+        ) : (
+          <>
+            <InfoRow>
+              <Label>Nome:</Label>
+              <Value>{user.nome}</Value>
+            </InfoRow>
+            <InfoRow>
+              <Label>Email:</Label>
+              <Value>{user.email}</Value>
+            </InfoRow>
+            <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem' }}>
+              <button onClick={() => setEdit(true)} style={{ padding: '0.75rem', background: '#007bff', color: '#fff', border: 'none', borderRadius: 4, fontWeight: 'bold' }}>Editar</button>
+              <LogoutButton onClick={handleDelete}>Excluir Conta</LogoutButton>
+            </div>
+          </>
+        )}
+      </Card>
+    </UserContainer>
   );
 };
 

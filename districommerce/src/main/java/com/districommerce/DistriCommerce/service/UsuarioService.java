@@ -52,6 +52,10 @@ public class UsuarioService {
         return repository.findById(id).orElse(null);
     }
 
+    public Usuario buscarPorEmail(String email) {
+        return repository.findByEmail(email).orElse(null);
+    }
+
     public Usuario atualizar(Long id, UsuarioDTO dto) {
         Optional<Usuario> optional = repository.findById(id);
         if (optional.isPresent()) {
