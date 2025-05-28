@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { getProductById } from '../../services/api';
 import { ProductDetailsContainer, ProductImage, ProductInfo, ProductTitle, ProductPrice, ProductDescription, AddToCartButton } from './styles';
+import BackButton from '../../components/BackButton';
 
 const ProductDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -22,6 +24,7 @@ const ProductDetails = () => {
 
   return (
     <ProductDetailsContainer>
+      <BackButton onClick={() => navigate('/')} style={{ marginBottom: 20 }}>Voltar</BackButton>
       <ProductImage src={product.imagem || product.image} alt={product.nome || product.title} />
       <ProductInfo>
         <ProductTitle>{product.nome || product.title}</ProductTitle>

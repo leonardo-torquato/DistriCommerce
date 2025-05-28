@@ -1,9 +1,9 @@
 import { LoginContainer, Form, Input, Button, LinkText, Logo } from './styles';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { loginUser, getUserByEmail } from '../../services/api'; // Importa a função de login e getUserByEmail
 import { parseJwt } from '../../services/jwt';
+import BackButton from '../../components/BackButton';
 
 const Login = () => {
 
@@ -43,6 +43,7 @@ const Login = () => {
 
   return (
     <LoginContainer>
+      <BackButton onClick={() => navigate('/')} style={{ marginBottom: 20 }}>Voltar</BackButton>
       <Logo src="/logo.png" alt="Distrcommerce Logo" />
       <h2>Entrar</h2>
       <Form onSubmit={handleSubmit}>

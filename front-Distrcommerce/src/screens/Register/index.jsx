@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { RegisterContainer, Form, Input, Button, Logo } from './styles';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { registerUser } from '../../services/api';
-import { useNavigate } from 'react-router-dom';
+import BackButton from '../../components/BackButton';
 
 const Register = () => {
   const [form, setForm] = useState({
@@ -32,6 +32,7 @@ const Register = () => {
 
   return (
     <RegisterContainer>
+      <BackButton onClick={() => navigate('/')} style={{ marginBottom: 20 }}>Voltar</BackButton>
       <Logo src="/logo.png" alt="Distrcommerce Logo" />
       <h2>Cadastro</h2>
       <Form onSubmit={handleSubmit}>

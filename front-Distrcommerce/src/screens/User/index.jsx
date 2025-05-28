@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { getUserById, updateUser, deleteUser } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 import { UserContainer, Card, Title, InfoRow, Label, Value, LogoutButton } from './styles';
+import BackButton from '../../components/BackButton';
 
 const User = () => {
   const [user, setUser] = useState(null);
@@ -79,6 +80,7 @@ const User = () => {
 
   return (
     <UserContainer>
+      <BackButton onClick={() => navigate('/')} style={{ marginBottom: 20 }}>Voltar</BackButton>
       <Card>
         <Title>Minha Conta</Title>
         {edit ? (

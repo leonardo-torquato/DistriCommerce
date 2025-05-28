@@ -29,11 +29,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <div className="App">
         {!hideHeader && <Header onSearch={setSearchTerm} />}
-        {location.pathname === "/" ? (
-          <Home searchTerm={searchTerm} />
-        ) : (
-          <AppRoutes />
-        )}
+        <AppRoutes searchTerm={searchTerm} />
       </div>
     </ThemeProvider>
   );

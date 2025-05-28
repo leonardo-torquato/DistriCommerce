@@ -8,10 +8,10 @@ import Register from '../screens/Register';
 import Cart from '../screens/Cart';
 import Checkout from '../screens/Checkout';
 
-const AppRoutes = () => {
+const AppRoutes = ({ searchTerm }) => {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<Home searchTerm={searchTerm} />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/user" element={<User />} />
