@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Search, ShoppingCart, Person } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -10,18 +10,29 @@ import {
   NavItems
 } from './styles';
 
-const Header = () => {
+const Header = ({ onSearch }) => {
   const navigate = useNavigate();
+  const [search, setSearch] = useState('');
+
+  const handleInput = e => setSearch(e.target.value);
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (onSearch) {
+      onSearch(search);
+    }
+  };
 
   return (
     <HeaderContainer>
       <Logo onClick={() => navigate('/')}>DistrCommerce</Logo>
-      <SearchBar>
-        <SearchInput type="text" placeholder="Search products..." />
-        <IconButton>
-          <Search style={{ color: 'white' }} />
-        </IconButton>
-      </SearchBar>
+      <form onSubmit={handleSearch} style={{ flex: 1 }}>
+        <SearchBar>
+          <SearchInput type="text" placeholder="Search products..." value={search} onChange={handleInput} />
+          <IconButton type="submit">
+            <Search style={{ color: 'white' }} />
+          </IconButton>
+        </SearchBar>
+      </form>
       <NavItems>
         <IconButton onClick={() => navigate('/user')}>
           <Person style={{ color: 'white' }} />

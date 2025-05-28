@@ -7,10 +7,10 @@ const ProductCard = ({ product }) => {
 
   return (
     <CardContainer onClick={() => navigate(`/product/${product.id}`)}>
-      <ProductImage src={product.image} alt={product.title} />
+      <ProductImage src={product.imagem || product.image} alt={product.nome || product.title} />
       <ProductInfo>
-        <ProductTitle>{product.title}</ProductTitle>
-        <ProductPrice>R$ {product.price.toFixed(2)}</ProductPrice>
+        <ProductTitle>{product.nome || product.title}</ProductTitle>
+        <ProductPrice>R$ {(product.preco !== undefined ? product.preco : product.price)?.toFixed(2)}</ProductPrice>
         <ProductRating>
           {Array(5)
             .fill()

@@ -79,4 +79,25 @@ export const getUserByEmail = async (email, token) => {
   }
 };
 
+export const getProducts = async () => {
+  try {
+    const response = await api.get(apiRoutes.produtos.listar());
+    return response.data;
+  }
+  catch (error) {
+    console.error('Erro ao buscar produtos:', error);
+    throw error;
+  }
+};
+
+export const getProductById = async (id) => {
+  try {
+    const response = await api.get(apiRoutes.produtos.buscar(id));
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao buscar produto por ID:', error);
+    throw error;
+  }
+};
+
 export default api;

@@ -49,7 +49,7 @@ export const Dot = styled.div`
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: ${({ active }) => active ? '#FFD814' : 'rgba(255, 255, 255, 0.5)'};
+  background: ${({ $active }) => $active ? '#FFD814' : 'rgba(255, 255, 255, 0.5)'};
   cursor: pointer;
   transition: background 0.3s;
 

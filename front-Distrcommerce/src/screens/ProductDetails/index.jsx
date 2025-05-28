@@ -1,27 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { getProductById } from '../../services/api';
 import { ProductDetailsContainer, ProductImage, ProductInfo, ProductTitle, ProductPrice, ProductDescription, AddToCartButton } from './styles';
 
 const ProductDetails = () => {
   const { id } = useParams();
-  // Aqui você vai buscar os detalhes do produto usando o id
-  // Por enquanto vamos usar dados mockados
-  const product = {
-    id: id,
-    title: "Iphone 12 Pro Max",
-    price: 5000,
-    description: "Uma descrição detalhada do produto aqui...",
-    image: "https://imgs.casasbahia.com.br/55029405/1g.jpg?imwidth=500",
-    rating: 4.5
-  };
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getProductById(id)
+      .then(data => {
+        setProduct(data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, [id]);
+
+  if (loading) return <ProductDetailsContainer>Carregando...</ProductDetailsContainer>;
+  if (!product) return <ProductDetailsContainer>Produto não encontrado.</ProductDetailsContainer>;
 
   return (
     <ProductDetailsContainer>
-      <ProductImage src={product.image} alt={product.title} />
+      <ProductImage src={product.imagem || product.image} alt={product.nome || product.title} />
       <ProductInfo>
-        <ProductTitle>{product.title}</ProductTitle>
-        <ProductPrice>R$ {product.price.toFixed(2)}</ProductPrice>
-        <ProductDescription>{product.description}</ProductDescription>
+        <ProductTitle>{product.nome || product.title}</ProductTitle>
+        <ProductPrice>R$ {product.preco ? product.preco.toFixed(2) : product.price?.toFixed(2)}</ProductPrice>
+        <ProductDescription>{product.descricao || product.description}</ProductDescription>
         <AddToCartButton>Adicionar ao Carrinho</AddToCartButton>
       </ProductInfo>
     </ProductDetailsContainer>
