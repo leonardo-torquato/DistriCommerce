@@ -82,6 +82,7 @@ export const getUserByEmail = async (email, token) => {
 export const getProducts = async () => {
   try {
     const response = await api.get(apiRoutes.produtos.listar());
+    //console.log('Produtos recebidos:', response.data);
     return response.data;
   }
   catch (error) {

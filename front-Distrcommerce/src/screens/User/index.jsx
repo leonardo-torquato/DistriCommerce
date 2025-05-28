@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { getUserById, updateUser, deleteUser } from '../../services/api';
+import { getUserById, updateUser } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 import { UserContainer, Card, Title, InfoRow, Label, Value, LogoutButton } from './styles';
 import BackButton from '../../components/BackButton';
@@ -18,13 +18,13 @@ const User = () => {
       const userIdStr = localStorage.getItem('userId');
       // userId pode ser string (email) se vier do sub do JWT
       const userId = userIdStr && !isNaN(Number(userIdStr)) ? Number(userIdStr) : userIdStr;
-      console.log('DEBUG: token', token); // depuração
-      console.log('DEBUG: userId', userId); // depuração
+      //console.log('DEBUG: token', token); // depuração
+      //console.log('DEBUG: userId', userId); // depuração
       if (token && userId) {
         try {
           let data;
           data = await getUserById(userId, token);
-          console.log('DEBUG: getUserById/getUserByEmail data', data); // depuração
+          //console.log('DEBUG: getUserById/getUserByEmail data', data); // depuração
           setUser(data);
           setForm({ nome: data.nome, email: data.email });
         } catch (err) {
@@ -58,23 +58,14 @@ const User = () => {
     }
   };
 
-  const handleDelete = async () => {
-    if (window.confirm('Deseja realmente excluir sua conta?')) {
-      const token = localStorage.getItem('token');
-      const userId = localStorage.getItem('userId');
-      try {
-        await deleteUser(userId, token);
-        localStorage.clear();
-        alert('Conta excluída.');
-        navigate('/register');
-      } catch {
-        alert('Erro ao excluir conta.');
-      }
-    }
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    navigate('/login');
   };
 
   if (!user) {
-    console.log('DEBUG: user está nulo, renderizando Carregando...'); // depuração
+    //console.log('DEBUG: user está nulo, renderizando Carregando...'); // depuração
     return <div>Carregando...</div>;
   }
 
@@ -110,7 +101,7 @@ const User = () => {
             </InfoRow>
             <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem' }}>
               <button onClick={() => setEdit(true)} style={{ padding: '0.75rem', background: '#007bff', color: '#fff', border: 'none', borderRadius: 4, fontWeight: 'bold' }}>Editar</button>
-              <LogoutButton onClick={handleDelete}>Excluir Conta</LogoutButton>
+              <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
             </div>
           </>
         )}

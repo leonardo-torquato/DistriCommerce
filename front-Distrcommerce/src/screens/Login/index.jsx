@@ -16,7 +16,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const result = await loginUser(form);
-      let token, userId;
+      let token;
       if (typeof result === 'object' && result.token) {
         token = result.token;
       } else {
@@ -43,7 +43,6 @@ const Login = () => {
 
   return (
     <LoginContainer>
-      <BackButton onClick={() => navigate('/')} style={{ marginBottom: 20 }}>Voltar</BackButton>
       <Logo src="/logo.png" alt="Distrcommerce Logo" />
       <h2>Entrar</h2>
       <Form onSubmit={handleSubmit}>
@@ -55,7 +54,7 @@ const Login = () => {
           onChange={handleChange}
           required
         />
-        
+
         <Input
           type="password"
           name="senha"

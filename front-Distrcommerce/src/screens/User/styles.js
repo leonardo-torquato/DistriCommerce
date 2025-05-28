@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const UserContainer = styled.div`
   min-height: 80vh;
   display: flex;
+  flex-direction: column; /* alinhamento vertical */
   align-items: center;
   justify-content: center;
   background: #f5f6fa;
@@ -26,7 +27,7 @@ export const Title = styled.h1`
 
 export const InfoRow = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-direction: column; /* alteração para layout vertical */
   margin-bottom: 1.1rem;
   align-items: flex-start;
 `;

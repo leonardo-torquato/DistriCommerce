@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Home from '../screens/Home';
 import User from '../screens/User';
 import ProductDetails from '../screens/ProductDetails';
@@ -8,16 +8,22 @@ import Register from '../screens/Register';
 import Cart from '../screens/Cart';
 import Checkout from '../screens/Checkout';
 
+// Middleware para rotas protegidas
+const ProtectedRoute = ({ element }) => {
+  const token = localStorage.getItem('token');
+  return token ? element : <Navigate to="/login" />;
+};
+
 const AppRoutes = ({ searchTerm }) => {
   return (
     <Routes>
-      <Route path="/" element={<Home searchTerm={searchTerm} />} />
+      <Route path="/" element={<ProtectedRoute element={<Home searchTerm={searchTerm} />} />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/user" element={<User />} />
-      <Route path="/product/:id" element={<ProductDetails />} />
-      <Route path="/cart" element={<Cart />} />
-      <Route path="/checkout" element={<Checkout />} />
+      <Route path="/user" element={<ProtectedRoute element={<User />} />} />
+      <Route path="/product/:id" element={<ProtectedRoute element={<ProductDetails />} />} />
+      <Route path="/cart" element={<ProtectedRoute element={<Cart />} />} />
+      <Route path="/checkout" element={<ProtectedRoute element={<Checkout />} />} />
     </Routes>
   );
 };

@@ -9,6 +9,7 @@ export function parseJwt (token) {
     }).join(''));
     return JSON.parse(jsonPayload);
   } catch (e) {
+    console.error('Erro ao decodificar o JWT:', e);
     return null;
   }
 }

@@ -7,9 +7,9 @@ const ProductCard = ({ product }) => {
 
   return (
     <CardContainer onClick={() => navigate(`/product/${product.id}`)}>
-      <ProductImage src={product.imagem || product.image} alt={product.nome || product.title} />
+      <ProductImage src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROtdXlvvIYV1aZFn7y-9czmY97FRwsZ1UaQw&s" alt={product.nome || product.title} />
       <ProductInfo>
-        <ProductTitle>{product.nome || product.title}</ProductTitle>
+        <ProductTitle>{product.nome} - {product.descricao}</ProductTitle>
         <ProductPrice>R$ {(product.preco !== undefined ? product.preco : product.price)?.toFixed(2)}</ProductPrice>
         <ProductRating>
           {Array(5)
