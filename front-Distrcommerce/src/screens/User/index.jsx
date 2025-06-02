@@ -99,9 +99,25 @@ const User = () => {
               <Label>Email:</Label>
               <Value>{user.email}</Value>
             </InfoRow>
-            <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem' }}>
-              <button onClick={() => setEdit(true)} style={{ padding: '0.75rem', background: '#007bff', color: '#fff', border: 'none', borderRadius: 4, fontWeight: 'bold' }}>Editar</button>
-              <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
+            <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+              <button
+                onClick={() => setEdit(true)}
+                style={{ padding: '0.75rem', background: '#007bff', color: '#fff', border: 'none', borderRadius: 4, fontWeight: 'bold' }}
+              >
+                Editar
+              </button>
+              <button
+                onClick={handleLogout}
+                style={{ padding: '0.75rem', background: '#d32f2f', color: '#fff', border: 'none', borderRadius: 4, fontWeight: 'bold' }}
+              >
+                Logout
+              </button>
+              <button
+                onClick={() => navigate('/orders')}
+                style={{ padding: '0.75rem', background: '#28a745', color: '#fff', border: 'none', borderRadius: 4, fontWeight: 'bold' }}
+              >
+                Meus Pedidos
+              </button>
             </div>
           </>
         )}
