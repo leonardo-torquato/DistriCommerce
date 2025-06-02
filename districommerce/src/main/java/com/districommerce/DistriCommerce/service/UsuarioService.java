@@ -33,6 +33,7 @@ public class UsuarioService {
         u.setEmail(dto.getEmail());
         u.setSenha(passwordEncoder.encode(dto.getSenha()));
         u.setRole("USER");
+        u.setTipoUsuario(dto.getTipoUsuario()); // novo campo
         return repository.save(u);
     }
 
@@ -65,6 +66,7 @@ public class UsuarioService {
             if (dto.getSenha() != null && !dto.getSenha().isEmpty()) {
                 u.setSenha(passwordEncoder.encode(dto.getSenha()));
             }
+            u.setTipoUsuario(dto.getTipoUsuario()); // novo campo
             return repository.save(u);
         }
         return null;
