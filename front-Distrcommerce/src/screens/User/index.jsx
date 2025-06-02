@@ -112,12 +112,21 @@ const User = () => {
               >
                 Logout
               </button>
-              <button
-                onClick={() => navigate('/orders')}
-                style={{ padding: '0.75rem', background: '#28a745', color: '#fff', border: 'none', borderRadius: 4, fontWeight: 'bold' }}
-              >
-                Meus Pedidos
-              </button>
+              {user.tipoUsuario === 0 ? (
+                <button
+                  onClick={() => navigate('/orders')}
+                  style={{ padding: '0.75rem', background: '#28a745', color: '#fff', border: 'none', borderRadius: 4, fontWeight: 'bold' }}
+                >
+                  Meus Pedidos
+                </button>
+              ) : (
+                <button
+                  onClick={() => navigate('/user-products')}
+                  style={{ padding: '0.75rem', background: '#28a745', color: '#fff', border: 'none', borderRadius: 4, fontWeight: 'bold' }}
+                >
+                  Meus Produtos
+                </button>
+              )}
             </div>
           </>
         )}

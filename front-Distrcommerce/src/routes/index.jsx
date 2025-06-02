@@ -8,6 +8,7 @@ import Register from '../screens/Register';
 import Cart from '../screens/Cart';
 import Checkout from '../screens/Checkout';
 import Orders from '../screens/Orders';
+import UserProducts from '../screens/UserProducts';
 
 // Middleware para rotas protegidas
 const ProtectedRoute = ({ element }) => {
@@ -26,6 +27,7 @@ const AppRoutes = ({ searchTerm }) => {
       <Route path="/cart" element={<ProtectedRoute element={<Cart />} />} />
       <Route path="/checkout" element={<ProtectedRoute element={<Checkout />} />} />
       <Route path="/orders" element={<ProtectedRoute element={<Orders />} />} />
+      <Route path="/user-products" element={<ProtectedRoute element={<UserProducts />} />} />
     </Routes>
   );
 };
