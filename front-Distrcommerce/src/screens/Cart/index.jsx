@@ -37,6 +37,12 @@ const Cart = () => {
   const total = itens.reduce((acc, item) => acc + item.preco * item.quantity, 0);
 
   const handleCheckout = () => {
+    // Verifica se há algum item com quantidade maior que o disponível em estoque
+    const invalidItem = itens.find(item => item.quantity > item.estoque);
+    if (invalidItem) {
+      alert(`A quantidade solicitada para "${invalidItem.nome}" (${invalidItem.quantity}) é maior que o estoque disponível (${invalidItem.estoque}).`);
+      return;
+    }
     // Navega para a página de checkout passando os dados do carrinho via state
     navigate('/checkout', { state: { cart: itens } });
   };
@@ -60,6 +66,7 @@ const Cart = () => {
             <strong>{item.nome}</strong>
             <span>Preço: R$ {item.preco.toFixed(2)}</span>
             <span>Quantidade: {item.quantity}</span>
+            <span>Em estoque: {item.estoque}</span> {/* Nova linha para exibir o estoque */}
             <ItemActions>
               <button onClick={() => alterarQuantidade(item.id, -1)}>-</button>
               <button onClick={() => alterarQuantidade(item.id, 1)}>+</button>

@@ -40,6 +40,7 @@ const ProductDetails = () => {
         nome: product.nome || product.title,
         preco: product.preco || product.price,
         quantity: 1,
+        estoque: product.estoque,
         imagem:
           product.imagem ||
           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROtdXlvvIYV1aZFn7y-9czmY97FRwsZ1UaQw&s",
@@ -75,11 +76,13 @@ const ProductDetails = () => {
         <ProductInfo>
           <ProductTitle>{product.nome || product.title}</ProductTitle>
           <ProductPrice>
-            R${" "}
-            {(product.preco || product.price)?.toFixed(2)}
+            R$ {(product.preco || product.price)?.toFixed(2)}
           </ProductPrice>
           <ProductDescription>
             {product.descricao || product.description}
+          </ProductDescription>
+          <ProductDescription>
+            <strong>Em Estoque: </strong>{product.estoque}
           </ProductDescription>
           <AddToCartButton onClick={handleAddToCart}>
             Adicionar ao Carrinho
